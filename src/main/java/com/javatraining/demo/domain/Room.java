@@ -10,9 +10,15 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     RoomType type;
+
+    @Column(nullable = false)
     Double price;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     RoomStatus status;
 
