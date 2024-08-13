@@ -1,6 +1,8 @@
 package com.javatraining.demo.controller;
 
 import com.javatraining.demo.domain.Guest;
+import com.javatraining.demo.domain.Reservation;
+import com.javatraining.demo.dto.ReservationRequestDTO;
 import com.javatraining.demo.service.HotelManagementSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +23,15 @@ public class HotelManagementSystemController {
         return ResponseEntity.ok("Guest Added Successfully");
     }
 
-    @PostMapping(path = "/addGuests")
-    public ResponseEntity addGuests(@RequestBody List<Guest> guests) {
-        hotelManagementSystemService.addGuests(guests);
-        return ResponseEntity.ok("Guests Added Successfully");
+    @PostMapping(path ="/reservation")
+    public Reservation bookRoom(@RequestBody ReservationRequestDTO reservationRequestDTO){
+        return hotelManagementSystemService.makeReservation(reservationRequestDTO);
     }
 
-    @GetMapping(path = "/getGuest/{emailId}")
-    public Guest getGustes(@PathVariable String emailId){
-        return hotelManagementSystemService.getGuestByEmailId(emailId);
-    }
-
-    @GetMapping(path = "/getGuest/{emailId}/{phoneNumber}")
-    public Guest getGustes(@PathVariable String emailId, @PathVariable Long phoneNumber){
-        return hotelManagementSystemService.getGuestByEmailIdAndPhoneNumber(emailId, phoneNumber);
+    @PutMapping(path = "/cancel/{reservationId}")
+    public void cancelReservation(@PathVariable String reservationId) {
+        Long rId = Long.parseLong(reservationId);
+        hotelManagementSystemService.cancelReservation(rId);
     }
 
 }
