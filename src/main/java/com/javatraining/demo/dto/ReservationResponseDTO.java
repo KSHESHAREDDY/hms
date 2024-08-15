@@ -7,6 +7,9 @@ public class ReservationResponseDTO {
     private String statusMessage;
     private Reservation reservation;
 
+    public ReservationResponseDTO() {
+    }
+
     public ReservationResponseDTO(Long statusCode, String statusMessage) {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;

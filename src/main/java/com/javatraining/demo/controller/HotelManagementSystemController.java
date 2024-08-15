@@ -2,9 +2,11 @@ package com.javatraining.demo.controller;
 
 import com.javatraining.demo.domain.Guest;
 import com.javatraining.demo.domain.Reservation;
+import com.javatraining.demo.dto.GuestResponseDTO;
 import com.javatraining.demo.dto.ReservationRequestDTO;
 import com.javatraining.demo.dto.ReservationResponseDTO;
 import com.javatraining.demo.exception.InvalidDataException;
+import com.javatraining.demo.exception.ReservationException;
 import com.javatraining.demo.exception.SqlException;
 import com.javatraining.demo.service.HotelManagementSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,20 @@ public class HotelManagementSystemController {
 
     @PostMapping(path = "/addGuest", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addGuest(@RequestBody Guest guest) {
+    public GuestResponseDTO addGuest(@RequestBody Guest guest) {
         try {
-            hotelManagementSystemService.addGuest(guest);
+            Guest guest1 = hotelManagementSystemService.addGuest(guest);
+            GuestResponseDTO guestResponseDTO = new GuestResponseDTO();
+            guestResponseDTO.setId(2000L);
+            guestResponseDTO.setStatusMessage("Guest Added Successfully");
+            guestResponseDTO.setGuest(guest1);
+            return guestResponseDTO;
         } catch (InvalidDataException ex) {
-            return ResponseEntity.badRequest().body(ex);
+            GuestResponseDTO guestResponseDTO = new GuestResponseDTO();
+            guestResponseDTO.setId(ex.getId());
+            guestResponseDTO.setStatusMessage(ex.getStatusMessage());
+            return guestResponseDTO;
         }
-        return ResponseEntity.ok("Guest Added Successfully");
     }
 
     @PostMapping(path = "/reservation")
@@ -46,9 +55,18 @@ public class HotelManagementSystemController {
     }
 
     @PutMapping(path = "/cancel/{reservationId}")
-    public void cancelReservation(@PathVariable String reservationId) {
+    public ReservationResponseDTO cancelReservation(@PathVariable String reservationId) {
         Long rId = Long.parseLong(reservationId);
-        hotelManagementSystemService.cancelReservation(rId);
+        try {
+            hotelManagementSystemService.cancelReservation(rId);
+            ReservationResponseDTO response = new ReservationResponseDTO();
+            response.setStatusCode(2000L);
+            response.setStatusMessage("Reservation Cancelled SuccessFullly");
+            return response;
+        } catch (ReservationException ex) {
+            ReservationResponseDTO response = new ReservationResponseDTO(ex.getId(),
+                    ex.getStatusMessage());
+            return response;
+        }
     }
-
 }

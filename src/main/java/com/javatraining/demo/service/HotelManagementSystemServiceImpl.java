@@ -6,6 +6,7 @@ import com.javatraining.demo.domain.Reservation;
 import com.javatraining.demo.domain.Room;
 import com.javatraining.demo.dto.ReservationRequestDTO;
 import com.javatraining.demo.exception.InvalidDataException;
+import com.javatraining.demo.exception.ReservationException;
 import com.javatraining.demo.exception.SqlException;
 import com.javatraining.demo.respository.GuestRepository;
 import com.javatraining.demo.respository.ReservationRepository;
@@ -29,9 +30,9 @@ public class HotelManagementSystemServiceImpl implements HotelManagementSystemSe
     RoomRepositroy roomRepositroy;
 
     @Override
-    public void addGuest(Guest guest) throws InvalidDataException {
+    public Guest addGuest(Guest guest) throws InvalidDataException {
         if(guest != null && guest.getEmail() != null && guest.getName() != null){
-            guestRepository.save(guest);
+            return guestRepository.save(guest);
         } else {
             throw new InvalidDataException(1000L, "Guest Data Is invalid Please Send Valid Data");
         }
@@ -56,8 +57,13 @@ public class HotelManagementSystemServiceImpl implements HotelManagementSystemSe
     }
 
     @Override
-    public void cancelReservation(Long rId) {
-        reservationRepository.updateReservationStatusById(rId, ReservationStatus.CANCELLED);
+    public void cancelReservation(Long rId) throws ReservationException {
+        try {
+            reservationRepository.updateReservationStatusById(rId, ReservationStatus.CANCELLED);
+        } catch(Exception ex) {
+            throw new ReservationException(3000L, "Reservation id should Present");
+        }
+        
     }
 
 }
