@@ -30,6 +30,21 @@ public class RoomController {
         return roomService.getRoomById(room.getId());
     }
 
+    @GetMapping(path = "/welcome")
+    String welcome() {
+        return "I'm Protected";
+    }
+
+    @GetMapping(path = "/bank")
+    String bank() {
+        return "I'm Protected";
+    }
+
+    @GetMapping(path = "/atm")
+    String atm() {
+        return "I'm Protected";
+    }
+
     //delete
     @DeleteMapping(path = "/roomDelete")
     String deleteRoomById(@RequestBody Room room) {
