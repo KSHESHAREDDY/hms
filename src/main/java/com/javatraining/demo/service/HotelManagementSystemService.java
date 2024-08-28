@@ -7,8 +7,6 @@ import com.javatraining.demo.exception.InvalidDataException;
 import com.javatraining.demo.exception.ReservationException;
 import com.javatraining.demo.exception.SqlException;
 
-import java.util.List;
-
 public interface HotelManagementSystemService {
     Guest addGuest(Guest guest) throws InvalidDataException;
 

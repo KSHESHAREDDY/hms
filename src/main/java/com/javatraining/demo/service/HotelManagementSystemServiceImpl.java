@@ -14,9 +14,6 @@ import com.javatraining.demo.respository.RoomRepositroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLDataException;
-import java.sql.SQLIntegrityConstraintViolationException;
-
 @Service
 public class HotelManagementSystemServiceImpl implements HotelManagementSystemService {
 
@@ -31,7 +28,7 @@ public class HotelManagementSystemServiceImpl implements HotelManagementSystemSe
 
     @Override
     public Guest addGuest(Guest guest) throws InvalidDataException {
-        if(guest != null && guest.getEmail() != null && guest.getName() != null){
+        if (guest != null && guest.getEmail() != null && guest.getName() != null) {
             return guestRepository.save(guest);
         } else {
             throw new InvalidDataException(1000L, "Guest Data Is invalid Please Send Valid Data");
@@ -60,10 +57,10 @@ public class HotelManagementSystemServiceImpl implements HotelManagementSystemSe
     public void cancelReservation(Long rId) throws ReservationException {
         try {
             reservationRepository.updateReservationStatusById(rId, ReservationStatus.CANCELLED);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new ReservationException(3000L, "Reservation id should Present");
         }
-        
+
     }
 
 }
